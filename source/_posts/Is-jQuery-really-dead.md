@@ -1,0 +1,24 @@
+---
+title: Is jQuery really dead
+date: 2020-05-24 03:22:13
+tags:
+---
+
+
+Not sure. Before being declared it is dead. We need to check its pulse. We need to check why it came into existence.
+
+The fundamental concept of jQuery is its nature of hiding complexity. I bet many of us don’t remember the exact syntax of doing an ajax call with vanilla javascript, but sure you can recall doing an ajax call using jQuery. Yeah!. You got it. jQuery is built on a design pattern also known as Facade. Hiding complexity is the core idea of facade pattern.
+
+Let’s recall the problem jQuery solved for us and its alternative solution. First and foremost is jQuery selectors. We can use the power of CSS selectors with jQuery. Introduction of querySelctor and querySelectorAll has already eliminated the use of jQuery selectors.
+
+Ajax call by jQuery. jQuery came up a long way from success and failure callback syntax to syntax returning promises for ajax call but now developers are more towards reactive programming so using RxJS.
+
+Who can forget the contribution jQuery made in the field of animation? How to move stuff here and there and at what rate. CSS3 animation APIs has already fixed these things with more efficiency (CSS uses GPU not CPU).
+
+jQuery never solved the problem of dependency injection. We were always dependent on some other libraries like RequireJS, Steal etc for this feature.
+
+Although jQuery provided a quick solution for design, fewer lines of codes, millions of plugin, but has not provided any MVC(Model-View-Controller) structure to applications. Whereas this is the era of frameworks, where framework takes care of solving problems for us. Writing how to do is no more the pattern(imperative programming). ReactJS provides the way where we describe(declarative approach) what we want, and frameworks take care of how to do it.
+
+In the end, you can find traces of jQuery in almost every website, but they are legacy. We should salute jQuery for its contribution before it is gone. It will live in memories of many source code with their hallmark sign of $.
+
+Remember every $ is not jQuery. Link for this article in <a title="Is jQuery really dead?" href="https://medium.com/@bhupendrasparihar/is-jquery-really-dead-1439a89db173" target="_blank">medium</a>
