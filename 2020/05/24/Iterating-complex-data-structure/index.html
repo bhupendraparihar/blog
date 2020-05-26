@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Iterating complex data structure | jforjs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Let say we have an array of authors   const myFavouriteAuthors &#x3D; [   &#39;Neal Stephenson&#39;,   &#39;Arthur Clarke&#39;,   &#39;Isaac Asimov&#39;,    &#39;Robert Heinlein&#39; ];  we can iterate all authors using any loop or for o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Iterating complex data structure">
+<meta property="og:url" content="http://jforjs.com/2020/05/24/Iterating-complex-data-structure/index.html">
+<meta property="og:site_name" content="jforjs">
+<meta property="og:description" content="Let say we have an array of authors   const myFavouriteAuthors &#x3D; [   &#39;Neal Stephenson&#39;,   &#39;Arthur Clarke&#39;,   &#39;Isaac Asimov&#39;,    &#39;Robert Heinlein&#39; ];  we can iterate all authors using any loop or for o">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-23T21:59:22.000Z">
+<meta property="article:modified_time" content="2020-05-23T21:59:46.857Z">
+<meta property="article:author" content="Bhupendra Singh Parihar">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="jforjs" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jforjs</a>
+      </h1>
+      
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://jforjs.com"></form>
+      </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Iterating-complex-data-structure" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Iterating complex data structure
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Let say we have an array of authors</p>
+<pre>
+
+const myFavouriteAuthors = [
+  'Neal Stephenson',
+  'Arthur Clarke',
+  'Isaac Asimov', 
+  'Robert Heinlein'
+];
+</pre>
+<p>we can iterate all authors using any loop or for of here, but if we modify the data structure in below format,</p>
+<pre>
+
+const myFavouriteAuthors = {
+  allAuthors: {
+    fiction: [
+      'Agatha Christie', 
+      'J. K. Rowling',
+      'Dr. Seuss'
+    ],
+    scienceFiction: [
+      'Neal Stephenson',
+      'Arthur Clarke',
+      'Isaac Asimov', 
+      'Robert Heinlein'
+    ],
+    fantasy: [
+      'J. R. R. Tolkien',
+      'J. K. Rowling',
+      'Terry Pratchett'
+    ],
+  }
+}
+</pre>
+<p>then you cannot iterate all authors using for loop or any other loop with ease. So we can write our own method </p>
+<pre>
+
+const myFavouriteAuthors = {
+  allAuthors: {
+    ...
+  },
+  getAllAuthors() {
+      const authors = [];
+
+      for (const author of this.allAuthors.fiction) {
+          authors.push(author);
+      }
+
+      for (const author of this.allAuthros.scienceFiction) {
+          authors.push(author);
+      }
+
+      for (const author of this.allAuthors.fantasy) {
+          authors.push(author);
+      }
+
+      return authors;
+  }
+}
+</pre>
+<p>The problem with this approrach is we need to be aware of the method called getAllAuthors and if our data sctructure has one more genre then we need to modify the getAllAuthors function as well. This is not cool.</p>
+<p>So, what’s the other approach is make our data structure iterable. Can we do that. Yes we can!!</p>
+<p>An iterable is a data structure that wants to make its elements accessible to the public. It does so by implementing a method whose key is Symbol.iterator. That method is a factory for iterators. That is,  it will create iterators.</p>
+<pre>
+const myFavouriteAuthors = {
+  allAuthors: {
+    fiction: [
+      'Agatha Christie', 
+      'J. K. Rowling',
+      'Dr. Seuss'
+    ],
+    scienceFiction: [
+      'Neal Stephenson',
+      'Arthur Clarke',
+      'Isaac Asimov', 
+      'Robert Heinlein'
+    ],
+    fantasy: [
+      'J. R. R. Tolkien',
+      'J. K. Rowling',
+      'Terry Pratchett'
+    ],
+  },
+  [Symbol.iterator]() {
+    // Get all the authors in an array
+    const genres = Object.values(this.allAuthors);
+
+    // Store the current genre and author index
+    let currentAuthorIndex = 0;
+    let currentGenreIndex = 0;
+
+    return {
+      // Implementation of next()
+      next() {
+        // authors according to current genre index
+        const authors = genres[currentGenreIndex];
+
+        // doNotHaveMoreAuthors is true when the authors array is exhausted.
+        // That is, all items are consumed.
+        const doNothaveMoreAuthors = !(currentAuthorIndex < authors.length);
+        if (doNothaveMoreAuthors) {
+          // When that happens, we move the genre index to the next genre
+          currentGenreIndex++;
+          // and reset the author index to 0 again to get new set of authors
+          currentAuthorIndex = 0;
+        }
+
+        // if all genres are over, then we need tell the iterator that we 
+        // can not give more values.
+        const doNotHaveMoreGenres = !(currentGenreIndex < genres.length);
+        if (doNotHaveMoreGenres) {
+          // Hence, we return done as true.
+          return {
+            value: undefined,
+            done: true
+          };
+        }
+
+        // if everything is correct, return the author from the 
+        // current genre and incerement the currentAuthorindex
+        // so next time, the next author can be returned.
+        return {
+          value: genres[currentGenreIndex][currentAuthorIndex++],
+          done: false
+        }
+      }
+    };
+  }
+};
+
+for (const author of myFavouriteAuthors) {
+  console.log(author);
+}
+
+console.log(...myFavouriteAuthors)
+</pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://jforjs.com/2020/05/24/Iterating-complex-data-structure/" data-id="ckankunpy000aggln4ye381za" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/24/Factory-function/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Factory function
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/24/Implement-synchronous-run-for-asynchronous-tasks/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Implement synchronous run for asynchronous tasks</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/24/Factory-function/">Factory function</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Iterating-complex-data-structure/">Iterating complex data structure</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Implement-synchronous-run-for-asynchronous-tasks/">Implement synchronous run for asynchronous tasks</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Is-jQuery-really-dead/">Is jQuery really dead</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Fear-of-Frontend-Developer/">Fear of Frontend Developer</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Patterns-with-Async-call/">Patterns with Async call : Beautiful Javascript</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Play-around-node-modules-using-runkit-and-replem/">Play around node modules using runkit and replem</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Debounce-and-Throttle/">Implementing Throttle Function</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/22/Web-Scraping-through-YQL-and-nodejs/">Web Scraping through YQL and nodejs</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/22/SASS-compilation-with-grunt/">SASS compilation with grunt</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Bhupendra Singh Parihar<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

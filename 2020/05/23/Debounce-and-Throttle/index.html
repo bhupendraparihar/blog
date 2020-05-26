@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Implementing Throttle Function | jforjs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="What is a throttle function. “throttle” function returns a function which will run only once with in the time specified. This is very useful when we wish to perform some operation only once even when">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Implementing Throttle Function">
+<meta property="og:url" content="http://jforjs.com/2020/05/23/Debounce-and-Throttle/index.html">
+<meta property="og:site_name" content="jforjs">
+<meta property="og:description" content="What is a throttle function. “throttle” function returns a function which will run only once with in the time specified. This is very useful when we wish to perform some operation only once even when">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-23T10:45:32.000Z">
+<meta property="article:modified_time" content="2020-05-23T10:52:01.075Z">
+<meta property="article:author" content="Bhupendra Singh Parihar">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="jforjs" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jforjs</a>
+      </h1>
+      
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://jforjs.com"></form>
+      </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Debounce-and-Throttle" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Implementing Throttle Function
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>What is a throttle function. “throttle” function returns a function which will run only once with in the time specified. This is very useful when we wish to perform some operation only once even when the function is called multiple times.<br>For more details, <a href="http://underscorejs.org/#throttle" target="_blank" rel="noopener">please follow the link</a>.</p>
+<p>In this article we are discussing how can we implement our own throttle method. The definition of our function should be</p>
+<pre>
+function throttle(fn, timeInMilliseconds){
+    return function(){
+      ...
+    }
+}
+</pre>
+
+<p>So. let’s create a boolean variable which will in closure here, and change it only when the function is called or after certain time limit.</p>
+<pre>
+function throttle(fn, timeInMiliseconds){
+  var t = true;
+
+  return function(){
+    if(t){
+      fn();
+      t = false;
+
+      setTimeout(function(){
+        t = true;
+      },timeInMiliseconds);
+    }
+  }
+}
+</pre>
+<p>Testing our throttle function</p>
+<pre>
+function hello(){
+  console.log('hello');
+}
+
+//This returns a function which will only run once in 5 seconds.
+var throttled = throttle(hello, 5000);
+
+throttled(); //print hello
+throttled(); //5 second isn't over yet
+
+setTimeout(function(){
+  throttled();
+}, 2000); // 5 second isn't over yet
+
+setTimeout(function(){
+  throttled();
+}, 6000); //print hello
+</pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://jforjs.com/2020/05/23/Debounce-and-Throttle/" data-id="ckankunpp0003gglnchaa24kg" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/23/Play-around-node-modules-using-runkit-and-replem/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Play around node modules using runkit and replem
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/22/Web-Scraping-through-YQL-and-nodejs/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Web Scraping through YQL and nodejs</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/24/Factory-function/">Factory function</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Iterating-complex-data-structure/">Iterating complex data structure</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Implement-synchronous-run-for-asynchronous-tasks/">Implement synchronous run for asynchronous tasks</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Is-jQuery-really-dead/">Is jQuery really dead</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Fear-of-Frontend-Developer/">Fear of Frontend Developer</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Patterns-with-Async-call/">Patterns with Async call : Beautiful Javascript</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Play-around-node-modules-using-runkit-and-replem/">Play around node modules using runkit and replem</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Debounce-and-Throttle/">Implementing Throttle Function</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/22/Web-Scraping-through-YQL-and-nodejs/">Web Scraping through YQL and nodejs</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/22/SASS-compilation-with-grunt/">SASS compilation with grunt</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Bhupendra Singh Parihar<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

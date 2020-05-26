@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>looping problem | jforjs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="I was looking into a problem of closure inside loop in stackoverflow. It is as follows..  var funcs &#x3D; {}; for (var i &#x3D; 0; i &amp; lt; 3; i++) { &#x2F;&#x2F; let&#39;s create 3 functions     funcs[i] &#x3D; function () { &#x2F;&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="looping problem">
+<meta property="og:url" content="http://jforjs.com/2020/05/22/looping-problem/index.html">
+<meta property="og:site_name" content="jforjs">
+<meta property="og:description" content="I was looking into a problem of closure inside loop in stackoverflow. It is as follows..  var funcs &#x3D; {}; for (var i &#x3D; 0; i &amp; lt; 3; i++) { &#x2F;&#x2F; let&#39;s create 3 functions     funcs[i] &#x3D; function () { &#x2F;&#x2F;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-22T06:43:48.000Z">
+<meta property="article:modified_time" content="2020-05-22T06:53:41.480Z">
+<meta property="article:author" content="Bhupendra Singh Parihar">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="jforjs" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jforjs</a>
+      </h1>
+      
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://jforjs.com"></form>
+      </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-looping-problem" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      looping problem
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>I was looking into a problem of closure inside loop in stackoverflow. It is as follows..</p>
+<pre>
+var funcs = {};
+for (var i = 0; i & lt; 3; i++) { // let's create 3 functions
+    funcs[i] = function () { // and store them in funcs
+        console.log("My value: " + i); // each should log its value.
+    };
+}
+for (var j = 0; j & lt; 3; j++) {
+    funcs[j](); // and now let's run each one to see
+}
+</pre>
+
+<p>the output I was expecting is </p>
+<pre>
+My value: 0
+My value: 1
+My value: 2
+</pre>
+
+<p>But the output is much different.</p>
+<pre>
+My value: 3
+My value: 3
+My value: 3
+</pre>
+
+<p>Now the reason for such an awkward behaviour is within each of our anonymous functions, is bound to the same variable outside of the function.</p>
+<p>This problem can be solved by closure.</p>
+<pre>
+var funcs = {};
+for (var i = 0; i < 3; i++) {          // let's create 3 functions
+  funcs[i] = (function(i){
+    //console.log(i)
+
+    return function() {            // and store them in funcs
+       console.log("My value: " + i); // each should log its value.
+    };
+  })(i);
+}
+for (var j = 0; j < 3; j++) {
+    funcs[j]();                        // and now let's run each one to see1
+}
+</pre>
+
+<p>or just by using let instead of var, as let has block level scope.</p>
+<pre>
+var funcs = {};
+for (let i = 0; i & lt; 3; i++) { // let's create 3 functions
+    funcs[i] = function () { // and store them in funcs
+        console.log("My value: " + i); // each should log its value.
+    };
+}
+for (var j = 0; j & lt; 3; j++) {
+    funcs[j](); // and now let's run each one to see
+}
+</pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://jforjs.com/2020/05/22/looping-problem/" data-id="ckankunq5000cgglngww0gsny" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/22/SASS-compilation-with-grunt/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          SASS compilation with grunt
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/22/truthy-and-falsy/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">truthy and falsy</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/24/Factory-function/">Factory function</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Iterating-complex-data-structure/">Iterating complex data structure</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Implement-synchronous-run-for-asynchronous-tasks/">Implement synchronous run for asynchronous tasks</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Is-jQuery-really-dead/">Is jQuery really dead</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Fear-of-Frontend-Developer/">Fear of Frontend Developer</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Patterns-with-Async-call/">Patterns with Async call : Beautiful Javascript</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Play-around-node-modules-using-runkit-and-replem/">Play around node modules using runkit and replem</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Debounce-and-Throttle/">Implementing Throttle Function</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/22/Web-Scraping-through-YQL-and-nodejs/">Web Scraping through YQL and nodejs</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/22/SASS-compilation-with-grunt/">SASS compilation with grunt</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Bhupendra Singh Parihar<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

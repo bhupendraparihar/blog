@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Patterns with Async call : Beautiful Javascript | jforjs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Asynchornous call is very famous for its callback hell  getData(a &#x3D;&gt; {     getMoreData(a, b &#x3D;&gt; {         getMoreData(b, c &#x3D;&gt; {             getMoreData(c, d &#x3D;&gt; {                 getMoreData(d, e &#x3D;&gt; {">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Patterns with Async call : Beautiful Javascript">
+<meta property="og:url" content="http://jforjs.com/2020/05/23/Patterns-with-Async-call/index.html">
+<meta property="og:site_name" content="jforjs">
+<meta property="og:description" content="Asynchornous call is very famous for its callback hell  getData(a &#x3D;&gt; {     getMoreData(a, b &#x3D;&gt; {         getMoreData(b, c &#x3D;&gt; {             getMoreData(c, d &#x3D;&gt; {                 getMoreData(d, e &#x3D;&gt; {">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-23T10:57:09.000Z">
+<meta property="article:modified_time" content="2020-05-23T10:59:50.511Z">
+<meta property="article:author" content="Bhupendra Singh Parihar">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="jforjs" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jforjs</a>
+      </h1>
+      
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://jforjs.com"></form>
+      </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Patterns-with-Async-call" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Patterns with Async call : Beautiful Javascript
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        </title>
+
+<p>Asynchornous call is very famous for its callback hell</p>
+<pre>
+getData(a => {
+    getMoreData(a, b => {
+        getMoreData(b, c => {
+            getMoreData(c, d => {
+                getMoreData(d, e => {
+                    console.log(e);
+                });
+            });
+        });
+    });
+});
+</pre>
+
+<p>Promise Hell</p>
+<pre>
+getData()
+.then(a => getMoreData(a))
+.then(b => getMoreData(b))
+.then(c => getMoreData(c))
+.then(d => getMoreData(d))
+.then(e => console.log(e));
+</pre>
+
+<p>Its’ not over yet</p>
+<pre>
+getData()
+.then(getMoreData)
+.then(getMoreData)
+.then(getMoreData)
+.then(getMoreData)
+.then(console.log);
+</pre>
+
+<p>Looks synchronous with async-await</p>
+<pre>
+(async () => {
+    const a = await getData();
+    const b = await getMoreData(a);
+    const c = await getMoreData(b);
+    const d = await getMoreData(c);
+    const e = await getMoreData(d);
+    console.log(e);
+})
+</pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://jforjs.com/2020/05/23/Patterns-with-Async-call/" data-id="ckankunpu0008ggln7wggd0fc" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/23/Fear-of-Frontend-Developer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Fear of Frontend Developer
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/23/Play-around-node-modules-using-runkit-and-replem/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Play around node modules using runkit and replem</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/24/Factory-function/">Factory function</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Iterating-complex-data-structure/">Iterating complex data structure</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Implement-synchronous-run-for-asynchronous-tasks/">Implement synchronous run for asynchronous tasks</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Is-jQuery-really-dead/">Is jQuery really dead</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Fear-of-Frontend-Developer/">Fear of Frontend Developer</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Patterns-with-Async-call/">Patterns with Async call : Beautiful Javascript</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Play-around-node-modules-using-runkit-and-replem/">Play around node modules using runkit and replem</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Debounce-and-Throttle/">Implementing Throttle Function</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/22/Web-Scraping-through-YQL-and-nodejs/">Web Scraping through YQL and nodejs</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/22/SASS-compilation-with-grunt/">SASS compilation with grunt</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Bhupendra Singh Parihar<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

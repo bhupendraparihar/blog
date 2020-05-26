@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>SASS compilation with grunt | jforjs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="When SASS file is compiled, you get .CSS file. I am not going to explain the syntax of SASS, instead of that I will explain how it is setup with grunt so that you can compile the SASS file easily. Pre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SASS compilation with grunt">
+<meta property="og:url" content="http://jforjs.com/2020/05/22/SASS-compilation-with-grunt/index.html">
+<meta property="og:site_name" content="jforjs">
+<meta property="og:description" content="When SASS file is compiled, you get .CSS file. I am not going to explain the syntax of SASS, instead of that I will explain how it is setup with grunt so that you can compile the SASS file easily. Pre">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-22T06:57:02.000Z">
+<meta property="article:modified_time" content="2020-05-22T07:01:51.769Z">
+<meta property="article:author" content="Bhupendra Singh Parihar">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="jforjs" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jforjs</a>
+      </h1>
+      
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://jforjs.com"></form>
+      </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-SASS-compilation-with-grunt" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SASS compilation with grunt
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>When SASS file is compiled, you get .CSS file. I am not going to explain the syntax of SASS, instead of that I will explain how it is setup with grunt so that you can compile the SASS file easily.</p>
+<p>Prerequisite for SASS</p>
+<ol>
+    <li>Node js installed</li>
+    <li>grunt installed</li>
+</ol>
+Now go to the specific folder where you want to setup your web project
+and install grunt-contrib-sass package. There are many ways to do that. Simplest one is running command in your terminal or command prompt.
+<pre>npm install grunt-contrib-sass</pre>
+This will download grunt-contrib-sass package in your node_modules folder. Another way of install this package is by including dependencies in package.json file.
+
+<p>Create a simple html file where you can apply your generated stylesheet(.css).</p>
+<p>Now create a sample .sass file called style.sass</p>
+<pre>
+$primary-color: #FCF
+
+body
+  color: $primary-color
+</pre>
+<p>Once you done with that you need to create grunt file named GruntFile.js and write the below code in that file.</p>
+<pre>module.exports = function(grunt) {
+
+grunt.initConfig({
+  sass: {                              // Task
+    dist: {                            // Target
+      options: {                       // Target options
+        style: 'expanded'
+      },
+      files: {                         // Dictionary of files
+        'style.css': 'style.sass'       // 'destination': 'source'
+      }
+    }
+  }
+});
+
+grunt.loadNpmTasks('grunt-contrib-sass');
+
+grunt.registerTask('default', ['sass']);
+
+};
+</pre>
+<p>now run the below command in your terminal</p>
+<pre>grunt</pre>
+<p>This command will compile your style.sass file into style.css. You can see the directory for newly created file, which will look like</p>
+<pre>body {
+  color: #ffccff;
+}</pre>
+<p>Open your index.html file which you have created earlier by following this tutorial.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://jforjs.com/2020/05/22/SASS-compilation-with-grunt/" data-id="ckankunpw0009ggln0ufb37wr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/22/Web-Scraping-through-YQL-and-nodejs/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Web Scraping through YQL and nodejs
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/22/looping-problem/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">looping problem</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/24/Factory-function/">Factory function</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Iterating-complex-data-structure/">Iterating complex data structure</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Implement-synchronous-run-for-asynchronous-tasks/">Implement synchronous run for asynchronous tasks</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/24/Is-jQuery-really-dead/">Is jQuery really dead</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Fear-of-Frontend-Developer/">Fear of Frontend Developer</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Patterns-with-Async-call/">Patterns with Async call : Beautiful Javascript</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Play-around-node-modules-using-runkit-and-replem/">Play around node modules using runkit and replem</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/23/Debounce-and-Throttle/">Implementing Throttle Function</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/22/Web-Scraping-through-YQL-and-nodejs/">Web Scraping through YQL and nodejs</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/22/SASS-compilation-with-grunt/">SASS compilation with grunt</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Bhupendra Singh Parihar<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
