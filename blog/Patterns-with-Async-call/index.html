@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patterns with Async call : Beautiful Javascript</title>
+    <link rel="stylesheet" href="/style.css" >
+</head>
+<body>
+    <header class="page-header">
+  <div class="container">
+    <div class="page-header__content">
+      <div>
+          <div class="logo"><a href="/">jforjs</a></div>
+      </div>
+      <nav>
+        
+        <ul role="list" class="nav-list flex-group">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+    <main>
+        <article class="main-article">
+<div class="container container--narrow flow">
+  
+    <h1 class="article-title">
+      Patterns with Async call : Beautiful Javascript
+    </h1>
+    <figure class="main-article__figure">
+      <img src="/assets/blog/code1.jpg" alt="">
+      <figcaption>
+        
+      </figcaption>
+    </figure>
+    
+    </title>
+<p>Asynchornous call is very famous for its callback hell</p>
+<pre>
+getData(a => {
+    getMoreData(a, b => {
+        getMoreData(b, c => {
+            getMoreData(c, d => {
+                getMoreData(d, e => {
+                    console.log(e);
+                });
+            });
+        });
+    });
+});
+</pre>
+<p>Promise Hell</p>
+<pre>
+getData()
+.then(a => getMoreData(a))
+.then(b => getMoreData(b))
+.then(c => getMoreData(c))
+.then(d => getMoreData(d))
+.then(e => console.log(e));
+</pre>
+<p>Its' not over yet</p>
+<pre>
+getData()
+.then(getMoreData)
+.then(getMoreData)
+.then(getMoreData)
+.then(getMoreData)
+.then(console.log);
+</pre>
+<p>Looks synchronous with async-await</p>
+<pre>
+(async () => {
+    const a = await getData();
+    const b = await getMoreData(a);
+    const c = await getMoreData(b);
+    const d = await getMoreData(c);
+    const e = await getMoreData(d);
+    console.log(e);
+})
+</pre>
+  
+</div>
+</article>
+    
+
+    </main>
+    <footer class="site-footer">
+    <div class="logo footer"><a href="/">jforjs</a></div>
+  <p>© 2022 Bhupendra Parihar. All rights reserved.</p>
+</footer>
+</body>
+</html>

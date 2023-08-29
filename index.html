@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My homepage</title>
+    <link rel="stylesheet" href="/style.css" >
+</head>
+<body>
+    <header class="page-header">
+  <div class="container">
+    <div class="page-header__content">
+      <div>
+          <div class="logo"><a href="/">jforjs</a></div>
+      </div>
+      <nav>
+        
+        <ul role="list" class="nav-list flex-group">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+    <main>
+        
+<section class="hero">
+  <div class="container flow">
+      <div class="hero__content flow">
+        <h1 class="section-title">Welcome to my blog!</h1>
+        <p>I use this space to document my adventures in front-end development, sharing how I’ve overcome issues I’ve run into, useful resources, and more.</p>
+        <p>Below are some of my favourite articles, or you can go to the blog page to see my most recent posts.</p>
+        <div class="flex-group">
+          <a href="#featured-articles" class="btn btn--primary">Featured articles</a>
+          <a href="./blog" class="btn btn--neutral">Most recent articles</a>
+        </div>
+      </div>
+      <div>
+        <img src="//unsplash.it/510" alt="" class="hero__image">
+      </div>
+  </div>
+</section>
+
+<section id="featured-articles" class="featured-articles">
+  <div class="container flow">
+    <h2 class="section-title text-center ">Featured articles</h2>
+    <p class="text-center">Here is a sample of articles which I feel give you a good idea of what this site is all about.</p>
+    <ul role="list" class="articles__list flow"><li><li>
+    <article class="snippet">
+        <img src="/assets/blog/article-2.jpg" alt="" 
+        class="snippet__image" />
+        <h3 class="snippet__title"><a href="/blog/Factory-function/">Factory function</a></h3>
+        <p class="snippet__meta">
+            by <span>Bhupendra Parihar</span> on <span>May 24, 2020</span>
+          </p>
+          <p class="snippet__body">
+            A factory function is any function which is not a class or constructor that returns a new object. In JavaScript, any function can return an object. When it does so without the new keyword, it’s a factory function.
+          </p>
+          <a href="/blog/Factory-function/" class="btn btn--primary"
+            >Continue Reading</a
+          >
+    </article>
+</li><li>
+    <article class="snippet">
+        <img src="/assets/blog/iterator.jpg" alt="" 
+        class="snippet__image" />
+        <h3 class="snippet__title"><a href="/blog/Iterating-complex-data-structure/">Iterating complex data structure</a></h3>
+        <p class="snippet__meta">
+            by <span></span> on <span>May 24, 2020</span>
+          </p>
+          <p class="snippet__body">
+            Implement iterator to iterate through complex data structure.
+          </p>
+          <a href="/blog/Iterating-complex-data-structure/" class="btn btn--primary"
+            >Continue Reading</a
+          >
+    </article>
+</li><li>
+    <article class="snippet">
+        <img src="/assets/blog/synchronization.jpg" alt="" 
+        class="snippet__image" />
+        <h3 class="snippet__title"><a href="/blog/Implement-synchronous-run-for-asynchronous-tasks/">Implement synchronous run for asynchronous tasks</a></h3>
+        <p class="snippet__meta">
+            by <span></span> on <span>May 24, 2020</span>
+          </p>
+          <p class="snippet__body">
+            
+          </p>
+          <a href="/blog/Implement-synchronous-run-for-asynchronous-tasks/" class="btn btn--primary"
+            >Continue Reading</a
+          >
+    </article>
+</li><li>
+    <article class="snippet">
+        <img src="/assets/blog/jquery-dead.jpg" alt="" 
+        class="snippet__image" />
+        <h3 class="snippet__title"><a href="/blog/Is-jQuery-really-dead/">Is jQuery really dead</a></h3>
+        <p class="snippet__meta">
+            by <span></span> on <span>May 24, 2020</span>
+          </p>
+          <p class="snippet__body">
+            What we have learnt from jQuery.
+          </p>
+          <a href="/blog/Is-jQuery-really-dead/" class="btn btn--primary"
+            >Continue Reading</a
+          >
+    </article>
+</li><li>
+    <article class="snippet">
+        <img src="/assets/blog/front-end-framework.png" alt="" 
+        class="snippet__image" />
+        <h3 class="snippet__title"><a href="/blog/Fear-of-Frontend-Developer/">Fear of Frontend Developer</a></h3>
+        <p class="snippet__meta">
+            by <span>Bhupendra Parihar</span> on <span>May 23, 2020</span>
+          </p>
+          <p class="snippet__body">
+            
+          </p>
+          <a href="/blog/Fear-of-Frontend-Developer/" class="btn btn--primary"
+            >Continue Reading</a
+          >
+    </article>
+</li><li>
+    <article class="snippet">
+        <img src="/assets/blog/code1.jpg" alt="" 
+        class="snippet__image" />
+        <h3 class="snippet__title"><a href="/blog/Patterns-with-Async-call/">Patterns with Async call : Beautiful Javascript</a></h3>
+        <p class="snippet__meta">
+            by <span></span> on <span>May 23, 2020</span>
+          </p>
+          <p class="snippet__body">
+            
+          </p>
+          <a href="/blog/Patterns-with-Async-call/" class="btn btn--primary"
+            >Continue Reading</a
+          >
+    </article>
+</li><li>
+    <article class="snippet">
+        <img src="/assets/blog/programmer.jpg" alt="" 
+        class="snippet__image" />
+        <h3 class="snippet__title"><a href="/blog/Debounce-and-Throttle/">Implementing Throttle Function</a></h3>
+        <p class="snippet__meta">
+            by <span>Bhupendra Parihar</span> on <span>May 23, 2020</span>
+          </p>
+          <p class="snippet__body">
+            What is a throttle function. &quot;throttle&quot; function returns a function which will run only once with in the time specified. This is very useful when we wish to perform some operation only once even when the function is called multiple times.
+          </p>
+          <a href="/blog/Debounce-and-Throttle/" class="btn btn--primary"
+            >Continue Reading</a
+          >
+    </article>
+</li></ul>
+  </div>
+</section> 
+
+    </main>
+    <footer class="site-footer">
+    <div class="logo footer"><a href="/">jforjs</a></div>
+  <p>© 2022 Bhupendra Parihar. All rights reserved.</p>
+</footer>
+</body>
+</html>

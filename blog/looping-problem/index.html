@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>looping problem</title>
+    <link rel="stylesheet" href="/style.css" >
+</head>
+<body>
+    <header class="page-header">
+  <div class="container">
+    <div class="page-header__content">
+      <div>
+          <div class="logo"><a href="/">jforjs</a></div>
+      </div>
+      <nav>
+        
+        <ul role="list" class="nav-list flex-group">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+    <main>
+        <article class="main-article">
+<div class="container container--narrow flow">
+  
+    <h1 class="article-title">
+      looping problem
+    </h1>
+    <figure class="main-article__figure">
+      <img src="/assets/blog/loop.jpg" alt="">
+      <figcaption>
+        
+      </figcaption>
+    </figure>
+    
+    <p>I was looking into a problem of closure inside loop in stackoverflow. It is as follows..</p>
+<pre>
+var funcs = {};
+for (var i = 0; i & lt; 3; i++) { // let's create 3 functions
+    funcs[i] = function () { // and store them in funcs
+        console.log("My value: " + i); // each should log its value.
+    };
+}
+for (var j = 0; j & lt; 3; j++) {
+    funcs[j](); // and now let's run each one to see
+}
+</pre>
+<p>the output I was expecting is</p>
+<pre>
+My value: 0
+My value: 1
+My value: 2
+</pre>
+<p>But the output is much different.</p>
+<pre>
+My value: 3
+My value: 3
+My value: 3
+</pre>
+<p>Now the reason for such an awkward behaviour is within each of our anonymous functions, is bound to the same variable outside of the function.</p>
+<p>This problem can be solved by closure.</p>
+<pre>
+var funcs = {};
+for (var i = 0; i < 3; i++) {          // let's create 3 functions
+  funcs[i] = (function(i){
+    //console.log(i)
+    
+    return function() {            // and store them in funcs
+       console.log("My value: " + i); // each should log its value.
+    };
+  })(i);
+}
+for (var j = 0; j < 3; j++) {
+    funcs[j]();                        // and now let's run each one to see1
+}
+</pre>
+<p>or just by using let instead of var, as let has block level scope.</p>
+<pre>
+var funcs = {};
+for (let i = 0; i & lt; 3; i++) { // let's create 3 functions
+    funcs[i] = function () { // and store them in funcs
+        console.log("My value: " + i); // each should log its value.
+    };
+}
+for (var j = 0; j & lt; 3; j++) {
+    funcs[j](); // and now let's run each one to see
+}
+</pre>
+  
+</div>
+</article>
+    
+
+    </main>
+    <footer class="site-footer">
+    <div class="logo footer"><a href="/">jforjs</a></div>
+  <p>© 2022 Bhupendra Parihar. All rights reserved.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SASS compilation with grunt</title>
+    <link rel="stylesheet" href="/style.css" >
+</head>
+<body>
+    <header class="page-header">
+  <div class="container">
+    <div class="page-header__content">
+      <div>
+          <div class="logo"><a href="/">jforjs</a></div>
+      </div>
+      <nav>
+        
+        <ul role="list" class="nav-list flex-group">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+    <main>
+        <article class="main-article">
+<div class="container container--narrow flow">
+  
+    <h1 class="article-title">
+      SASS compilation with grunt
+    </h1>
+    <figure class="main-article__figure">
+      <img src="/assets/blog/article-2.jpg" alt="">
+      <figcaption>
+        
+      </figcaption>
+    </figure>
+    
+    <p>When SASS file is compiled, you get .CSS file. I am not going to explain the syntax of SASS, instead of that I will explain how it is setup with grunt so that you can compile the SASS file easily.</p>
+<p>Prerequisite for SASS</p>
+<ol>
+	<li>Node js installed</li>
+	<li>grunt installed</li>
+</ol>
+Now go to the specific folder where you want to setup your web project
+and install grunt-contrib-sass package. There are many ways to do that. Simplest one is running command in your terminal or command prompt.
+<pre>npm install grunt-contrib-sass</pre>
+This will download grunt-contrib-sass package in your node_modules folder. Another way of install this package is by including dependencies in package.json file.
+<p>Create a simple html file where you can apply your generated stylesheet(.css).</p>
+<p>Now create a sample .sass file called style.sass</p>
+<pre>
+$primary-color: #FCF
+
+body
+  color: $primary-color
+</pre>
+<p>Once you done with that you need to create grunt file named GruntFile.js and write the below code in that file.</p>
+<pre>module.exports = function(grunt) {
+
+grunt.initConfig({
+  sass: {                              // Task
+    dist: {                            // Target
+      options: {                       // Target options
+        style: 'expanded'
+      },
+      files: {                         // Dictionary of files
+        'style.css': 'style.sass'       // 'destination': 'source'
+      }
+    }
+  }
+});
+
+grunt.loadNpmTasks('grunt-contrib-sass');
+
+grunt.registerTask('default', ['sass']);
+
+};
+</pre>
+<p>now run the below command in your terminal</p>
+<pre>grunt</pre>
+<p>This command will compile your style.sass file into style.css. You can see the directory for newly created file, which will look like</p>
+<pre>body {
+  color: #ffccff;
+}</pre>
+<p>Open your index.html file which you have created earlier by following this tutorial.</p>
+
+  
+</div>
+</article>
+    
+
+    </main>
+    <footer class="site-footer">
+    <div class="logo footer"><a href="/">jforjs</a></div>
+  <p>© 2022 Bhupendra Parihar. All rights reserved.</p>
+</footer>
+</body>
+</html>

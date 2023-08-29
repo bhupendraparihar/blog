@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iterating complex data structure</title>
+    <link rel="stylesheet" href="/style.css" >
+</head>
+<body>
+    <header class="page-header">
+  <div class="container">
+    <div class="page-header__content">
+      <div>
+          <div class="logo"><a href="/">jforjs</a></div>
+      </div>
+      <nav>
+        
+        <ul role="list" class="nav-list flex-group">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+    <main>
+        <article class="main-article">
+<div class="container container--narrow flow">
+  
+    <h1 class="article-title">
+      Iterating complex data structure
+    </h1>
+    <figure class="main-article__figure">
+      <img src="/assets/blog/iterator.jpg" alt="">
+      <figcaption>
+        
+      </figcaption>
+    </figure>
+    
+    <p>Let say we have an array of authors</p>
+<pre>
+
+const myFavouriteAuthors = [
+  'Neal Stephenson',
+  'Arthur Clarke',
+  'Isaac Asimov', 
+  'Robert Heinlein'
+];
+</pre>
+<p>we can iterate all authors using any loop or for of here, but if we modify the data structure in below format,</p>
+<pre>
+
+const myFavouriteAuthors = {
+  allAuthors: {
+    fiction: [
+      'Agatha Christie', 
+      'J. K. Rowling',
+      'Dr. Seuss'
+    ],
+    scienceFiction: [
+      'Neal Stephenson',
+      'Arthur Clarke',
+      'Isaac Asimov', 
+      'Robert Heinlein'
+    ],
+    fantasy: [
+      'J. R. R. Tolkien',
+      'J. K. Rowling',
+      'Terry Pratchett'
+    ],
+  }
+}
+</pre>
+<p>then you cannot iterate all authors using for loop or any other loop with ease. So we can write our own method</p>
+<pre>
+
+const myFavouriteAuthors = {
+  allAuthors: {
+    ...
+  },
+  getAllAuthors() {
+  	const authors = [];
+
+  	for (const author of this.allAuthors.fiction) {
+  		authors.push(author);
+  	}
+
+  	for (const author of this.allAuthros.scienceFiction) {
+  		authors.push(author);
+  	}
+
+  	for (const author of this.allAuthors.fantasy) {
+  		authors.push(author);
+  	}
+
+  	return authors;
+  }
+}
+</pre>
+<p>The problem with this approrach is we need to be aware of the method called getAllAuthors and if our data sctructure has one more genre then we need to modify the getAllAuthors function as well. This is not cool.</p>
+<p>So, what's the other approach is make our data structure iterable. Can we do that. Yes we can!!</p>
+<p>An iterable is a data structure that wants to make its elements accessible to the public. It does so by implementing a method whose key is Symbol.iterator. That method is a factory for iterators. That is,  it will create iterators.</p>
+<pre>
+const myFavouriteAuthors = {
+  allAuthors: {
+    fiction: [
+      'Agatha Christie', 
+      'J. K. Rowling',
+      'Dr. Seuss'
+    ],
+    scienceFiction: [
+      'Neal Stephenson',
+      'Arthur Clarke',
+      'Isaac Asimov', 
+      'Robert Heinlein'
+    ],
+    fantasy: [
+      'J. R. R. Tolkien',
+      'J. K. Rowling',
+      'Terry Pratchett'
+    ],
+  },
+  [Symbol.iterator]() {
+    // Get all the authors in an array
+    const genres = Object.values(this.allAuthors);
+    
+    // Store the current genre and author index
+    let currentAuthorIndex = 0;
+    let currentGenreIndex = 0;
+    
+    return {
+      // Implementation of next()
+      next() {
+        // authors according to current genre index
+        const authors = genres[currentGenreIndex];
+        
+        // doNotHaveMoreAuthors is true when the authors array is exhausted.
+        // That is, all items are consumed.
+        const doNothaveMoreAuthors = !(currentAuthorIndex < authors.length);
+        if (doNothaveMoreAuthors) {
+          // When that happens, we move the genre index to the next genre
+          currentGenreIndex++;
+          // and reset the author index to 0 again to get new set of authors
+          currentAuthorIndex = 0;
+        }
+        
+        // if all genres are over, then we need tell the iterator that we 
+        // can not give more values.
+        const doNotHaveMoreGenres = !(currentGenreIndex < genres.length);
+        if (doNotHaveMoreGenres) {
+          // Hence, we return done as true.
+          return {
+            value: undefined,
+            done: true
+          };
+        }
+        
+        // if everything is correct, return the author from the 
+        // current genre and incerement the currentAuthorindex
+        // so next time, the next author can be returned.
+        return {
+          value: genres[currentGenreIndex][currentAuthorIndex++],
+          done: false
+        }
+      }
+    };
+  }
+};
+
+for (const author of myFavouriteAuthors) {
+  console.log(author);
+}
+
+console.log(...myFavouriteAuthors)
+</pre>
+  
+</div>
+</article>
+    
+
+    </main>
+    <footer class="site-footer">
+    <div class="logo footer"><a href="/">jforjs</a></div>
+  <p>© 2022 Bhupendra Parihar. All rights reserved.</p>
+</footer>
+</body>
+</html>

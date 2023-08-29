@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>public and private</title>
+    <link rel="stylesheet" href="/style.css" >
+</head>
+<body>
+    <header class="page-header">
+  <div class="container">
+    <div class="page-header__content">
+      <div>
+          <div class="logo"><a href="/">jforjs</a></div>
+      </div>
+      <nav>
+        
+        <ul role="list" class="nav-list flex-group">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+    <main>
+        <article class="main-article">
+<div class="container container--narrow flow">
+  
+    <h1 class="article-title">
+      public and private
+    </h1>
+    <figure class="main-article__figure">
+      <img src="/assets/blog/article-2.jpg" alt="">
+      <figcaption>
+        
+      </figcaption>
+    </figure>
+    
+    <p>Here is the code for creating a object definition(class) which maintains the public and private scope of variable.</p>
+<pre>
+function Person(new_name){
+	//_age is a private variable
+	var _age = "";
+
+	var obj = {};
+	
+	obj.name = new_name;
+	obj.getAge = function() {
+		return _age;
+	}
+	obj.setAge = function (new_age) {
+		_age = new_age;
+	}
+	obj.displayInfo = function () {
+		return "My age is " + _age;
+	}
+	return obj;
+}
+
+var person = new Person('BP');
+person.setAge(26);
+console.log(person.getAge()); //26
+console.log(person._age); //undefined
+</pre>
+<p>You can observe, it is closure what keeps the varible private</p>
+
+  
+</div>
+</article>
+    
+
+    </main>
+    <footer class="site-footer">
+    <div class="logo footer"><a href="/">jforjs</a></div>
+  <p>© 2022 Bhupendra Parihar. All rights reserved.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Scraping through YQL and nodejs</title>
+    <link rel="stylesheet" href="/style.css" >
+</head>
+<body>
+    <header class="page-header">
+  <div class="container">
+    <div class="page-header__content">
+      <div>
+          <div class="logo"><a href="/">jforjs</a></div>
+      </div>
+      <nav>
+        
+        <ul role="list" class="nav-list flex-group">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+    <main>
+        <article class="main-article">
+<div class="container container--narrow flow">
+  
+    <h1 class="article-title">
+      Web Scraping through YQL and nodejs
+    </h1>
+    <figure class="main-article__figure">
+      <img src="/assets/blog/article-2.jpg" alt="">
+      <figcaption>
+        
+      </figcaption>
+    </figure>
+    
+    <p>Web scraping (web harvesting or web data extraction) is a computer software technique of extracting information from websites.</p>
+<p>I used a node module call YQL(Yahoo Query Language) to achieve it. You may have many other ways to do the same.</p>
+<ol>
+<li>
+<p>npm install yql  (this will download yql module for your node project)</p>
+</li>
+<li>
+<p>app.js file.</p>
+</li>
+</ol>
+<pre>
+var http = require("http");
+var YQL = require("yql");
+var port = 3000;
+var serverUrl = "localhost";
+var word = {
+    "english": "",
+    "hindi": ""
+};
+
+
+new YQL.exec('select * from data.html.cssselect where url="http://shabdkosh.com/" and css="p.engwotd"', function(response) {
+    word.english = response.query.results.results.p.content;
+});
+
+new YQL.exec('select * from data.html.cssselect where url="http://shabdkosh.com/" and css=".indwotd"', function(response) {
+    word.hindi = response.query.results.results.p.content;
+});
+
+var server = http.createServer(function(req, res) {
+    console.log(word.english, word.hindi);
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(word));
+});
+
+console.log("Listening at " + serverUrl + ":" + port);
+server.listen(port, serverUrl);
+</pre>
+<ol start="3">
+<li>
+<p>node app.js</p>
+</li>
+<li>
+<p>hit your url : http://localhost:3000/</p>
+</li>
+</ol>
+
+  
+</div>
+</article>
+    
+
+    </main>
+    <footer class="site-footer">
+    <div class="logo footer"><a href="/">jforjs</a></div>
+  <p>© 2022 Bhupendra Parihar. All rights reserved.</p>
+</footer>
+</body>
+</html>

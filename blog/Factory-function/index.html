@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factory function</title>
+    <link rel="stylesheet" href="/style.css" >
+</head>
+<body>
+    <header class="page-header">
+  <div class="container">
+    <div class="page-header__content">
+      <div>
+          <div class="logo"><a href="/">jforjs</a></div>
+      </div>
+      <nav>
+        
+        <ul role="list" class="nav-list flex-group">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+    <main>
+        <article class="main-article">
+<div class="container container--narrow flow">
+  
+    <h1 class="article-title">
+      Factory function
+    </h1>
+    <figure class="main-article__figure">
+      <img src="/assets/blog/article-2.jpg" alt="">
+      <figcaption>
+        
+      </figcaption>
+    </figure>
+    
+    <p>What is factory function? And before this question, whatever it is, why I am going to use it. Hah!</p>
+<p>Let us consider this example</p>
+<p>I am creating two persons objects like</p>
+<pre>
+var johnDoe = {
+	firstName : ”John”,
+	lastName : ”Doe”,
+	sayHi  : function(){
+		return “Hi there”;
+	}
+};
+
+var janeDoe = {
+	firstName : ”Jane”,
+	lastName : ”Doe”,
+	sayHi  : function(){
+		return “Hi there”;
+	}
+}
+</pre>
+<p>We created two objects so what if I want to create 10 more person object. Should I write these lines 10 more time? Opps! Sorry!</p>
+<p>This is the situation where we are going to use factory function. In Javascript there are two function by which we can create object, one is <b>constructor function</b> and another is <b>factory function</b>.</p>
+<pre>
+var createPerson = function(fName , lName){
+	return {
+		firstName : fName,
+		lastName : lName,
+		sayHi : function(){
+			return “Hi there”;
+		}
+	};
+};
+
+var johnDoe = createPerson(“John”,”Doe”);
+
+var janeDoe = createPerson(“Jane”,”Doe”);
+</pre>
+<p>If we want to create multiple objects with same interface, this is the better way. Remember, Interface is a signature. Hope you understood what I am trying to say.</p>
+
+  
+</div>
+</article>
+    
+
+    </main>
+    <footer class="site-footer">
+    <div class="logo footer"><a href="/">jforjs</a></div>
+  <p>© 2022 Bhupendra Parihar. All rights reserved.</p>
+</footer>
+</body>
+</html>

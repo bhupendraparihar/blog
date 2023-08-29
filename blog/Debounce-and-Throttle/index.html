@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementing Throttle Function</title>
+    <link rel="stylesheet" href="/style.css" >
+</head>
+<body>
+    <header class="page-header">
+  <div class="container">
+    <div class="page-header__content">
+      <div>
+          <div class="logo"><a href="/">jforjs</a></div>
+      </div>
+      <nav>
+        
+        <ul role="list" class="nav-list flex-group">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+    <main>
+        <article class="main-article">
+<div class="container container--narrow flow">
+  
+    <h1 class="article-title">
+      Implementing Throttle Function
+    </h1>
+    <figure class="main-article__figure">
+      <img src="/assets/blog/programmer.jpg" alt="">
+      <figcaption>
+        
+      </figcaption>
+    </figure>
+    
+    <p>What is a throttle function. &quot;throttle&quot; function returns a function which will run only once with in the time specified. This is very useful when we wish to perform some operation only once even when the function is called multiple times.
+For more details, <a href="http://underscorejs.org/#throttle">please follow the link</a>.</p>
+<p>In this article we are discussing how can we implement our own throttle method. The definition of our function should be</p>
+<pre>
+function throttle(fn, timeInMilliseconds){
+    return function(){
+      ...
+    }
+}
+</pre>
+<p>So. let's create a boolean variable which will in closure here, and change it only when the function is called or after certain time limit.</p>
+<pre>
+function throttle(fn, timeInMiliseconds){
+  var t = true;
+
+  return function(){
+    if(t){
+      fn();
+      t = false;
+
+      setTimeout(function(){
+        t = true;
+      },timeInMiliseconds);
+    }
+  }
+}
+</pre>
+<p>Testing our throttle function</p>
+<pre>
+function hello(){
+  console.log('hello');
+}
+
+//This returns a function which will only run once in 5 seconds.
+var throttled = throttle(hello, 5000);
+
+throttled(); //print hello
+throttled(); //5 second isn't over yet
+
+setTimeout(function(){
+  throttled();
+}, 2000); // 5 second isn't over yet
+
+setTimeout(function(){
+  throttled();
+}, 6000); //print hello
+</pre>
+
+  
+</div>
+</article>
+    
+
+    </main>
+    <footer class="site-footer">
+    <div class="logo footer"><a href="/">jforjs</a></div>
+  <p>© 2022 Bhupendra Parihar. All rights reserved.</p>
+</footer>
+</body>
+</html>

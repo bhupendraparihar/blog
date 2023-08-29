@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implement synchronous run for asynchronous tasks</title>
+    <link rel="stylesheet" href="/style.css" >
+</head>
+<body>
+    <header class="page-header">
+  <div class="container">
+    <div class="page-header__content">
+      <div>
+          <div class="logo"><a href="/">jforjs</a></div>
+      </div>
+      <nav>
+        
+        <ul role="list" class="nav-list flex-group">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+    <main>
+        <article class="main-article">
+<div class="container container--narrow flow">
+  
+    <h1 class="article-title">
+      Implement synchronous run for asynchronous tasks
+    </h1>
+    <figure class="main-article__figure">
+      <img src="/assets/blog/synchronization.jpg" alt="">
+      <figcaption>
+        
+      </figcaption>
+    </figure>
+    
+    <p>This is a programming problem of running two asynchronous function in synchronous manner.  We have few async tasks t1, t2 and t3.</p>
+<pre>
+var t1 = function(arg){
+  console.log('Task 1 start');
+  setTimeout(function(){
+    console.log('Task 1 end');
+    arg();
+  }, 500);
+}
+
+
+var t2 = function(arg){
+  console.log('Task 2 start');
+  setTimeout(function(){
+    console.log('Task 2 end');
+    arg();
+  }, 100);
+}
+
+var t3 = function(arg){
+  console.log('Task 3 start');
+  setTimeout(function(){
+    console.log('Task 3 end');
+    arg();
+  }, 200);
+}
+</pre>
+<p>We want to implement a runSync method which takes array of these tasks, but run them synchronously.</p>
+<p>Lets create a task array, tasks = [t2, t3, t1], and t3 should run only when t2 is finished and then run t1.</p>
+<pre>
+var runSync = function(tasks){
+  var i = 0;
+  
+  function run(){
+    if(i < tasks.length){
+      tasks[i](run);
+      i++;
+    }
+   
+  }
+  
+  run();
+}
+
+runSync([t3,t1,t2]);
+
+</pre>
+  
+</div>
+</article>
+    
+
+    </main>
+    <footer class="site-footer">
+    <div class="logo footer"><a href="/">jforjs</a></div>
+  <p>© 2022 Bhupendra Parihar. All rights reserved.</p>
+</footer>
+</body>
+</html>
