@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intersection Observer API</title>
+    <link rel="stylesheet" href="/style.css" >
+</head>
+<body>
+    <header class="page-header">
+  <div class="container">
+    <div class="page-header__content">
+      <div>
+          <div class="logo"><a href="/">jforjs</a></div>
+      </div>
+      <nav>
+        
+        <ul role="list" class="nav-list flex-group">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+    <main>
+        <article class="main-article">
+<div class="container container--narrow flow">
+  
+    <h1 class="article-title">
+      Intersection Observer API
+    </h1>
+    <figure class="main-article__figure">
+      <img src="/assets/blog/code1.jpg" alt="">
+      <figcaption>
+        
+      </figcaption>
+    </figure>
+    
+    <p>Before the Intersection Observer API became widely supported, lazy loading of images and other content could be achieved using alternative techniques. One common approach was to use the <code>window.onscroll</code> event handler to determine when an element was in or near the viewport. Here's a simplified example of how you could implement lazy loading before the Intersection Observer API:</p>
+<pre><code class="language-javascript">import React, { useState, useEffect } from 'react';
+
+function LazyLoadImage({ src, alt }) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() =&gt; {
+    const handleScroll = () =&gt; {
+      const element = document.querySelector('.lazy-load-image');
+      if (element) {
+        const elementTop = element.getBoundingClientRect().top;
+        const viewportHeight =
+          window.innerHeight || document.documentElement.clientHeight;
+        if (elementTop &lt;= viewportHeight) {
+          setIsVisible(true);
+        }
+      }
+    };
+
+    // Attach the scroll event listener
+    window.addEventListener('scroll', handleScroll);
+
+    // Check initial visibility
+    handleScroll();
+
+    // Cleanup by removing the event listener
+    return () =&gt; {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return (
+    &lt;img src={isVisible ? src : ''} alt={alt} className=&quot;lazy-load-image&quot; /&gt;
+  );
+}
+
+export default LazyLoadImage;
+</code></pre>
+<p>Let's see, how we can write a product component in a typical e-commerce application</p>
+<pre><code class="language-javascript">import { Link } from 'react-router-dom';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import Rating from '../Rating/Rating';
+import axios from 'axios';
+import { useContext } from 'react';
+import { Store } from '../../Store';
+
+function Product(props) {
+  const { product } = props;
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const {
+    cart: { cartItems },
+  } = state;
+
+  const addToCartHandler = async (item) =&gt; {
+    const existItem = cartItems.find((x) =&gt; x._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/products/${item._id}`);
+
+    if (data.countInStock &lt; quantity) {
+      window.alert('Sorry, Product is out of stock');
+      return;
+    }
+    ctxDispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...item, quantity },
+    });
+  };
+
+  return (
+    &lt;Card className=&quot;product&quot; key={product.slug}&gt;
+      &lt;Link to={`/product/${product.slug}`}&gt;
+        &lt;img src={product.image} className=&quot;card-img-top&quot; alt={product.name} /&gt;
+      &lt;/Link&gt;
+      &lt;Card.Body&gt;
+        &lt;Link to={`/product/${product.slug}`}&gt;
+          &lt;Card.Title&gt;{product.name}&lt;/Card.Title&gt;
+        &lt;/Link&gt;
+        &lt;Rating rating={product.rating} numReviews={product.numReviews} /&gt;
+        &lt;Card.Text&gt;${product.price}&lt;/Card.Text&gt;
+        {product.countInStock === 0 ? (
+          &lt;Button variant=&quot;light&quot; disabled&gt;
+            Out of Stock
+          &lt;/Button&gt;
+        ) : (
+          &lt;Button onClick={() =&gt; addToCartHandler(product)}&gt;Add to Cart&lt;/Button&gt;
+        )}
+      &lt;/Card.Body&gt;
+    &lt;/Card&gt;
+  );
+}
+
+export default Product;
+</code></pre>
+<p>The above code create a Product component and consume the props which holds a product object.</p>
+<p>The problem statement for lazy loading is that suppose we have 100s of product and all these product will try to load the image even they are not there in the view port. So we need to write a logic such that only load the image if the section is in view port or near to the view port.</p>
+<p>So let's create two variable, isIntersecting and imageURL</p>
+<pre><code class="language-javascript">const [isIntersecting, setIsIntersecting] = useState(false);
+const [imageUrl, setImageUrl] = useState('');
+</code></pre>
+<p>and image element src should point to imageURL instead of product.image</p>
+<pre><code class="language-javascript">&lt;img src={imageUrl} className=&quot;card-img-top&quot; alt={product.name} ref={ref} /&gt;
+</code></pre>
+<p>Now, if isIntersecting is true, lets update the imageUrl with product.image</p>
+<pre><code class="language-javascript">useEffect(() =&gt; {
+  if (isIntersecting) {
+    setImageUrl(product.image);
+  }
+}, [isIntersecting, imageUrl, product.image]);
+</code></pre>
+<p>But how do we find the right value of isIntersecting, the answer is Intersection Observer API which came into picture in 2016.</p>
+<pre><code class="language-javascript">useEffect(() =&gt; {
+  const observer = new IntersectionObserver(([entry]) =&gt; {
+    setIsIntersecting(entry.isIntersecting);
+  });
+  observer.observe(ref.current);
+  return () =&gt; observer.disconnect();
+}, [isIntersecting]);
+</code></pre>
+<p>The combined code will looks like below code.</p>
+<pre><code class="language-javascript">import { Link } from 'react-router-dom';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import Rating from '../Rating/Rating';
+import axios from 'axios';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { Store } from '../../Store';
+
+function Product(props) {
+  const { product } = props;
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const {
+    cart: { cartItems },
+  } = state;
+
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+
+  const ref = useRef(null);
+
+  useEffect(() =&gt; {
+    const observer = new IntersectionObserver(([entry]) =&gt; {
+      setIsIntersecting(entry.isIntersecting);
+    });
+    observer.observe(ref.current);
+    return () =&gt; observer.disconnect();
+  }, [isIntersecting]);
+
+  useEffect(() =&gt; {
+    if (isIntersecting) {
+      setImageUrl(product.image);
+    }
+  }, [isIntersecting, imageUrl, product.image]);
+
+  const addToCartHandler = async (item) =&gt; {
+    const existItem = cartItems.find((x) =&gt; x._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/products/${item._id}`);
+
+    if (data.countInStock &lt; quantity) {
+      window.alert('Sorry, Product is out of stock');
+      return;
+    }
+    ctxDispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...item, quantity },
+    });
+  };
+
+  return (
+    &lt;Card className=&quot;product&quot; key={product.slug}&gt;
+      &lt;Link to={`/product/${product.slug}`}&gt;
+        &lt;img
+          src={imageUrl}
+          className=&quot;card-img-top&quot;
+          alt={product.name}
+          ref={ref}
+        /&gt;
+      &lt;/Link&gt;
+      &lt;Card.Body&gt;
+        &lt;Link to={`/product/${product.slug}`}&gt;
+          &lt;Card.Title&gt;{product.name}&lt;/Card.Title&gt;
+        &lt;/Link&gt;
+        &lt;Rating rating={product.rating} numReviews={product.numReviews} /&gt;
+        &lt;Card.Text&gt;${product.price}&lt;/Card.Text&gt;
+        {product.countInStock === 0 ? (
+          &lt;Button variant=&quot;light&quot; disabled&gt;
+            Out of Stock
+          &lt;/Button&gt;
+        ) : (
+          &lt;Button onClick={() =&gt; addToCartHandler(product)}&gt;Add to Cart&lt;/Button&gt;
+        )}
+      &lt;/Card.Body&gt;
+    &lt;/Card&gt;
+  );
+}
+
+export default Product;
+</code></pre>
+<p>But this code also looks like our onScroll function, so what is the advantage.</p>
+<p>Here's why the Intersection Observer API is better than the <code>window.onscroll</code> approach:</p>
+<ol>
+<li>
+<p>Efficiency:</p>
+<ul>
+<li>The Intersection Observer API is designed to be highly efficient. It allows you to observe multiple elements simultaneously without causing a significant performance hit because it utilizes browser internals to handle intersection checks.</li>
+<li>In contrast, the <code>window.onscroll</code> approach often involves repeatedly calculating element positions and firing scroll events, which can lead to performance bottlenecks, especially when observing many elements or complex scrolling behavior.</li>
+</ul>
+</li>
+<li>
+<p>Simplicity:</p>
+<ul>
+<li>With the Intersection Observer API, you simply define a callback function to be executed when an element intersects with the viewport or a specified container. This makes the code cleaner and more maintainable.</li>
+<li>The <code>window.onscroll</code> approach requires you to manage a lot of manual calculations and event handling, making the code less straightforward.</li>
+</ul>
+</li>
+<li>
+<p>Flexibility:</p>
+<ul>
+<li>The Intersection Observer API provides options for configuring the observed elements, such as specifying a margin around the intersection area, toggling once or multiple times, and observing elements inside specific containers.</li>
+<li>With <code>window.onscroll</code>, achieving similar functionality often requires complex custom code and calculations.</li>
+</ul>
+</li>
+<li>
+<p>Better Performance:</p>
+<ul>
+<li>Intersection observers are optimized for performance and leverage browser-native code for intersection calculations, resulting in smoother scrolling and better overall user experience.</li>
+<li>The <code>window.onscroll</code> approach can lead to janky scrolling and increased CPU usage, especially when dealing with a large number of elements or complex logic.</li>
+</ul>
+</li>
+<li>
+<p>Reducing JavaScript Execution:</p>
+<ul>
+<li>Since the Intersection Observer API relies on callbacks, it allows for better separation of concerns. JavaScript is only executed when intersections occur, reducing unnecessary script execution.</li>
+<li>The <code>window.onscroll</code> approach may involve continuous script execution as the user scrolls, even when no intersections are happening, potentially wasting resources.</li>
+</ul>
+</li>
+</ol>
+<p>I hope you enjoyed the article.</p>
+
+  
+</div>
+</article>
+    
+
+    </main>
+    <footer class="site-footer">
+    <div class="logo footer"><a href="/">jforjs</a></div>
+  <p>© 2022 Bhupendra Parihar. All rights reserved.</p>
+</footer>
+</body>
+</html>
