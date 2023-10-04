@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inheritance in JavaScript</title>
+    <link rel="stylesheet" href="/style.css" >
+</head>
+<body>
+    <header class="page-header">
+  <div class="container">
+    <div class="page-header__content">
+      <div>
+          <div class="logo"><a href="/">jforjs</a></div>
+      </div>
+      <nav>
+        
+        <ul role="list" class="nav-list flex-group">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+    <main>
+        <article class="main-article">
+<div class="container container--narrow flow">
+  
+    <h1 class="article-title">
+      Inheritance in JavaScript
+    </h1>
+    <figure class="main-article__figure">
+      <img src="/assets/blog/programmer.jpg" alt="">
+      <figcaption>
+        
+      </figcaption>
+    </figure>
+    
+    <p>Inheritance in JavaScript is very important topic to understand, but it has prototypal inheritance. This is not so easy to understand because this type of inheritance does not easily available in popular language like C++ or Java.</p>
+<p>For more details, <a href="http://underscorejs.org/#throttle">please follow the link</a>.</p>
+<p>So If you are coming from a comparative approach, this idea will look clumsy. Lets try. Suppose we want to create a Vehicle constructor.</p>
+<pre>
+function Vehicle(options){
+    this.manufacturingYear = options.manufacturingYear;
+}
+
+Vehicle.prototype.drive = function() {
+    return 'Vroom Vroom';
+}
+</pre>
+<p>Now, lets create a Car constructor which can inherit from Vehicle.</p>
+<pre>
+function Car(options) {
+    this.engineType = options.engineType;
+}
+
+Car.prototype.start = function() {
+    console.log(`{this.engineType} starting`);
+}
+
+const bmw = new Car({
+    manufacturingYear: 2023,
+    engineType: 'Petrol'
+});
+
+console.log(bmw.manufacturingYear); // undefined- no such property inside car
+
+</pre>
+<p>We need to make sure Car has all the features of Vehicle.</p>
+<pre>
+function Car(options) {
+    Vehicle.call(this, options);
+    this.engineType = options.engineType;
+}
+</pre>
+<p>By calling the Vehicle constructor inside Car, you can get all the properties of Car which is defined inside Vehicle. for example.</p>
+<pre>
+const bmw = new Car({
+    manufacturingYear: 2023,
+    engineType: 'Petrol'
+});
+
+console.log(bmw.manufacturingYear); // 2023 as output
+</pre>
+<p>but what about if we want to access drive method of Vehicle which is the part of Vehicle prototype. To make this happens, we need to change the prototype of Car.</p>
+<pre>
+Car.prototype = Object.create(Vehicle.prototype);
+</pre>
+<p>Assigning constructor, change the constructor of the Car instance.</p>
+<pre>
+console.log(bmw.constructor); // Vehicle
+</pre>
+<p>Lets reassign the constructor back to Car.</p>
+<pre>
+Car.prototype.constructor = Car;
+</pre>
+<p>The combined code will look like this.</p>
+<pre>
+function Vehicle(options){
+    this.manufacturingYear = options.manufacturingYear;
+}
+
+Vehicle.prototype.drive = function() {
+    console.log('Vroom Vroom');
+}
+
+function Car(options) {
+    Vehicle.call(this, options);
+    this.engineType = options.engineType;
+}
+
+Car.prototype = Object.create(Vehicle.prototype);
+Car.prototype.constructor = Car;
+
+Car.prototype.start = function() {
+    console.log(this.engineType + 'starting');
+}
+
+const bmw = new Car({
+    manufacturingYear: 2023,
+    engineType: 'Petrol'
+});
+
+console.log(bmw.manufacturingYear);
+
+bmw.drive()
+
+console.log(bmw.constructor)
+</pre>
+<p>This is very confusing even to a experienced developer. So JavaScript came up with Class. and the same can be approached using the below code</p>
+<pre>
+class Vehicle{
+  constructor(options){
+    this.manufacturingYear = options.manufacturingYear;
+  }
+  
+  drive() {
+    console.log('Vroom Vroom');
+  }
+}
+
+class Car extends Vehicle{
+  constructor(options){
+    super(options);
+    this.engineType = options.engineType;
+  }
+  
+  start() {
+    console.log(this.engineType + 'starting');
+  }
+}
+
+const bmw = new Car({
+    manufacturingYear: 2023,
+    engineType: 'Petrol'
+});
+
+console.log(bmw.manufacturingYear);
+
+bmw.drive()
+</pre>
+
+  
+</div>
+</article>
+    
+
+    </main>
+    <footer class="site-footer">
+    <div class="logo footer"><a href="/">jforjs</a></div>
+  <p>© 2022 Bhupendra Parihar. All rights reserved.</p>
+</footer>
+</body>
+</html>

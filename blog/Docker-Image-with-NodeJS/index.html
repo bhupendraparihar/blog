@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Image with NodeJS</title>
+    <link rel="stylesheet" href="/style.css" >
+</head>
+<body>
+    <header class="page-header">
+  <div class="container">
+    <div class="page-header__content">
+      <div>
+          <div class="logo"><a href="/">jforjs</a></div>
+      </div>
+      <nav>
+        
+        <ul role="list" class="nav-list flex-group">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+    <main>
+        <article class="main-article">
+<div class="container container--narrow flow">
+  
+    <h1 class="article-title">
+      Docker Image with NodeJS
+    </h1>
+    <figure class="main-article__figure">
+      <img src="/assets/blog/code3.jpg" alt="">
+      <figcaption>
+        
+      </figcaption>
+    </figure>
+    
+    <h2>The first question you should ask is why docker?</h2>
+<p>Docker provides a containerized environment to run your application. The benefit of doing so is ease of deployment, it requires minimum resources, and it is very useful in creating replicas in case of horizontal scaling(load balancing).</p>
+<h2>How do you install docker?</h2>
+<p>You can easily install docker, by download Docker Desktop for your operating system. Follow the installer, and this step will also automatically installs the docker-cli, which we are going to use.</p>
+<h2>Steps to create a docker image</h2>
+<ul>
+<li>Create a NodeJs project or you can choose the existing one as well. For this example I am using a super simple express server application.</li>
+</ul>
+<p>So, Lets create a folder and then create a package.json file.</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;simple-web&quot;,
+  &quot;dependencies&quot;: {
+    &quot;express&quot;: &quot;*&quot;
+  },
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;node index.js&quot;
+  }
+}
+</code></pre>
+<p>Then create a index.js file</p>
+<pre><code class="language-javascript">const express = require('express');
+
+const app = express();
+
+app.get('/', (req, res) =&gt; {
+  res.send('Hi There' + new Date());
+});
+
+app.listen(8080, () =&gt; {
+  console.log('Listening on port 5000');
+});
+</code></pre>
+<p>In a nutshell, the above application is creating a express server on default url and return the 'Hi There text with current date'. The application is listening on port 5000. So if you open your browser and then run localhost:5000, you will see the output.</p>
+<h2>Create a Dockerfile for image creation</h2>
+<ul>
+<li>
+<p>Create a file named Dockerfile. Remember this file does not have any extension.</p>
+</li>
+<li>
+<p>The first line in your Dockerfile is to provide the base image</p>
+<pre><code>FROM node:alpine3.17
+</code></pre>
+</li>
+<li>
+<p>Select the working directory to work with, so that the source code of your project may not touch or effect any other container specific file.</p>
+<pre><code>WORKDIR /usr/app
+</code></pre>
+</li>
+<li>
+<p>Copy the package.json into the working directory</p>
+<pre><code>COPY ./pakage.json ./
+</code></pre>
+</li>
+<li>
+<p>Install the dependencies</p>
+<pre><code>RUN npm install
+</code></pre>
+</li>
+<li>
+<p>Copy the remaining files and content to the working directory</p>
+<pre><code>COPY ./ ./
+</code></pre>
+</li>
+<li>
+<p>Provide the default command to run when the image is being used</p>
+<pre><code>CMD [&quot;npm&quot;, &quot;start&quot;]
+</code></pre>
+</li>
+</ul>
+<p>The overall content will look like this</p>
+<pre><code>FROM node:alpine3.17
+
+WORKDIR /usr/app
+
+# install some dependencies
+
+COPY ./package.json ./
+RUN npm install
+COPY ./ ./
+
+CMD [&quot;npm&quot;, &quot;start&quot;]
+
+</code></pre>
+<h2>Lets create the image</h2>
+<p>Go to the terminal</p>
+<pre><code>docker build -t jforjs/simple-webapp .
+</code></pre>
+<p>jforjs/simple-webapp is a tag name for the image generated.</p>
+<h2>Run the docker container with the image created</h2>
+<pre><code>docker run -p 8080:5000 jforjs/simple-webapp
+</code></pre>
+<p>You can open the browser and check by hitting the url localhost:8080, remember port 5000 is the port used inside the container, and we are connecting to that port by our port 8080.</p>
+<h2>How to check what is inside my container</h2>
+<pre><code>docker exec -it jforjs/simple-webapp sh
+</code></pre>
+<p>Hope you enjoyed the article.</p>
+
+  
+</div>
+</article>
+    
+
+    </main>
+    <footer class="site-footer">
+    <div class="logo footer"><a href="/">jforjs</a></div>
+  <p>© 2022 Bhupendra Parihar. All rights reserved.</p>
+</footer>
+</body>
+</html>
