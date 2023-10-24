@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intersection Observer API</title>
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet">
     <link rel="stylesheet" href="/style.css" >
 </head>
 <body>
@@ -43,204 +44,197 @@
     </figure>
     
     <p>Before the Intersection Observer API became widely supported, lazy loading of images and other content could be achieved using alternative techniques. One common approach was to use the <code>window.onscroll</code> event handler to determine when an element was in or near the viewport. Here's a simplified example of how you could implement lazy loading before the Intersection Observer API:</p>
-<pre><code class="language-javascript">import React, { useState, useEffect } from 'react';
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> React<span class="token punctuation">,</span> <span class="token punctuation">{</span> useState<span class="token punctuation">,</span> useEffect <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
 
-function LazyLoadImage({ src, alt }) {
-  const [isVisible, setIsVisible] = useState(false);
+<span class="token keyword">function</span> <span class="token function">LazyLoadImage</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> src<span class="token punctuation">,</span> alt <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>isVisible<span class="token punctuation">,</span> setIsVisible<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  useEffect(() =&gt; {
-    const handleScroll = () =&gt; {
-      const element = document.querySelector('.lazy-load-image');
-      if (element) {
-        const elementTop = element.getBoundingClientRect().top;
-        const viewportHeight =
-          window.innerHeight || document.documentElement.clientHeight;
-        if (elementTop &lt;= viewportHeight) {
-          setIsVisible(true);
-        }
-      }
-    };
+  <span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> <span class="token function-variable function">handleScroll</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> element <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'.lazy-load-image'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>element<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> elementTop <span class="token operator">=</span> element<span class="token punctuation">.</span><span class="token function">getBoundingClientRect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>top<span class="token punctuation">;</span>
+        <span class="token keyword">const</span> viewportHeight <span class="token operator">=</span>
+          window<span class="token punctuation">.</span>innerHeight <span class="token operator">||</span> document<span class="token punctuation">.</span>documentElement<span class="token punctuation">.</span>clientHeight<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>elementTop <span class="token operator">&lt;=</span> viewportHeight<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">setIsVisible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-    // Attach the scroll event listener
-    window.addEventListener('scroll', handleScroll);
+    <span class="token comment">// Attach the scroll event listener</span>
+    window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'scroll'</span><span class="token punctuation">,</span> handleScroll<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    // Check initial visibility
-    handleScroll();
+    <span class="token comment">// Check initial visibility</span>
+    <span class="token function">handleScroll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    // Cleanup by removing the event listener
-    return () =&gt; {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    <span class="token comment">// Cleanup by removing the event listener</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+      window<span class="token punctuation">.</span><span class="token function">removeEventListener</span><span class="token punctuation">(</span><span class="token string">'scroll'</span><span class="token punctuation">,</span> handleScroll<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  return (
-    &lt;img src={isVisible ? src : ''} alt={alt} className=&quot;lazy-load-image&quot; /&gt;
-  );
-}
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>img src<span class="token operator">=</span><span class="token punctuation">{</span>isVisible <span class="token operator">?</span> src <span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">}</span> alt<span class="token operator">=</span><span class="token punctuation">{</span>alt<span class="token punctuation">}</span> className<span class="token operator">=</span><span class="token string">"lazy-load-image"</span> <span class="token operator">/</span><span class="token operator">></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-export default LazyLoadImage;
-</code></pre>
+<span class="token keyword">export</span> <span class="token keyword">default</span> LazyLoadImage<span class="token punctuation">;</span></code></pre>
 <p>Let's see, how we can write a product component in a typical e-commerce application</p>
-<pre><code class="language-javascript">import { Link } from 'react-router-dom';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Rating from '../Rating/Rating';
-import axios from 'axios';
-import { useContext } from 'react';
-import { Store } from '../../Store';
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Link <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react-router-dom'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> Card <span class="token keyword">from</span> <span class="token string">'react-bootstrap/Card'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> Button <span class="token keyword">from</span> <span class="token string">'react-bootstrap/Button'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> Rating <span class="token keyword">from</span> <span class="token string">'../Rating/Rating'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> useContext <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Store <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../../Store'</span><span class="token punctuation">;</span>
 
-function Product(props) {
-  const { product } = props;
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const {
-    cart: { cartItems },
-  } = state;
+<span class="token keyword">function</span> <span class="token function">Product</span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span> product <span class="token punctuation">}</span> <span class="token operator">=</span> props<span class="token punctuation">;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span> state<span class="token punctuation">,</span> <span class="token literal-property property">dispatch</span><span class="token operator">:</span> ctxDispatch <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useContext</span><span class="token punctuation">(</span>Store<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">cart</span><span class="token operator">:</span> <span class="token punctuation">{</span> cartItems <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span> <span class="token operator">=</span> state<span class="token punctuation">;</span>
 
-  const addToCartHandler = async (item) =&gt; {
-    const existItem = cartItems.find((x) =&gt; x._id === product._id);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/${item._id}`);
+  <span class="token keyword">const</span> <span class="token function-variable function">addToCartHandler</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">item</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> existItem <span class="token operator">=</span> cartItems<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">x</span><span class="token punctuation">)</span> <span class="token operator">=></span> x<span class="token punctuation">.</span>_id <span class="token operator">===</span> product<span class="token punctuation">.</span>_id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> quantity <span class="token operator">=</span> existItem <span class="token operator">?</span> existItem<span class="token punctuation">.</span>quantity <span class="token operator">+</span> <span class="token number">1</span> <span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> <span class="token punctuation">{</span> data <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> axios<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/api/products/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>item<span class="token punctuation">.</span>_id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    if (data.countInStock &lt; quantity) {
-      window.alert('Sorry, Product is out of stock');
-      return;
-    }
-    ctxDispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...item, quantity },
-    });
-  };
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>data<span class="token punctuation">.</span>countInStock <span class="token operator">&lt;</span> quantity<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      window<span class="token punctuation">.</span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">'Sorry, Product is out of stock'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">ctxDispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'CART_ADD_ITEM'</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">payload</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token operator">...</span>item<span class="token punctuation">,</span> quantity <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-  return (
-    &lt;Card className=&quot;product&quot; key={product.slug}&gt;
-      &lt;Link to={`/product/${product.slug}`}&gt;
-        &lt;img src={product.image} className=&quot;card-img-top&quot; alt={product.name} /&gt;
-      &lt;/Link&gt;
-      &lt;Card.Body&gt;
-        &lt;Link to={`/product/${product.slug}`}&gt;
-          &lt;Card.Title&gt;{product.name}&lt;/Card.Title&gt;
-        &lt;/Link&gt;
-        &lt;Rating rating={product.rating} numReviews={product.numReviews} /&gt;
-        &lt;Card.Text&gt;${product.price}&lt;/Card.Text&gt;
-        {product.countInStock === 0 ? (
-          &lt;Button variant=&quot;light&quot; disabled&gt;
-            Out of Stock
-          &lt;/Button&gt;
-        ) : (
-          &lt;Button onClick={() =&gt; addToCartHandler(product)}&gt;Add to Cart&lt;/Button&gt;
-        )}
-      &lt;/Card.Body&gt;
-    &lt;/Card&gt;
-  );
-}
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>Card className<span class="token operator">=</span><span class="token string">"product"</span> key<span class="token operator">=</span><span class="token punctuation">{</span>product<span class="token punctuation">.</span>slug<span class="token punctuation">}</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>Link to<span class="token operator">=</span><span class="token punctuation">{</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/product/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>product<span class="token punctuation">.</span>slug<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">}</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>img src<span class="token operator">=</span><span class="token punctuation">{</span>product<span class="token punctuation">.</span>image<span class="token punctuation">}</span> className<span class="token operator">=</span><span class="token string">"card-img-top"</span> alt<span class="token operator">=</span><span class="token punctuation">{</span>product<span class="token punctuation">.</span>name<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>Link<span class="token operator">></span>
+      <span class="token operator">&lt;</span>Card<span class="token punctuation">.</span>Body<span class="token operator">></span>
+        <span class="token operator">&lt;</span>Link to<span class="token operator">=</span><span class="token punctuation">{</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/product/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>product<span class="token punctuation">.</span>slug<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">}</span><span class="token operator">></span>
+          <span class="token operator">&lt;</span>Card<span class="token punctuation">.</span>Title<span class="token operator">></span><span class="token punctuation">{</span>product<span class="token punctuation">.</span>name<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>Card<span class="token punctuation">.</span>Title<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>Link<span class="token operator">></span>
+        <span class="token operator">&lt;</span>Rating rating<span class="token operator">=</span><span class="token punctuation">{</span>product<span class="token punctuation">.</span>rating<span class="token punctuation">}</span> numReviews<span class="token operator">=</span><span class="token punctuation">{</span>product<span class="token punctuation">.</span>numReviews<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>Card<span class="token punctuation">.</span>Text<span class="token operator">></span>$<span class="token punctuation">{</span>product<span class="token punctuation">.</span>price<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>Card<span class="token punctuation">.</span>Text<span class="token operator">></span>
+        <span class="token punctuation">{</span>product<span class="token punctuation">.</span>countInStock <span class="token operator">===</span> <span class="token number">0</span> <span class="token operator">?</span> <span class="token punctuation">(</span>
+          <span class="token operator">&lt;</span>Button variant<span class="token operator">=</span><span class="token string">"light"</span> disabled<span class="token operator">></span>
+            Out <span class="token keyword">of</span> Stock
+          <span class="token operator">&lt;</span><span class="token operator">/</span>Button<span class="token operator">></span>
+        <span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token punctuation">(</span>
+          <span class="token operator">&lt;</span>Button onClick<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">addToCartHandler</span><span class="token punctuation">(</span>product<span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">></span>Add to Cart<span class="token operator">&lt;</span><span class="token operator">/</span>Button<span class="token operator">></span>
+        <span class="token punctuation">)</span><span class="token punctuation">}</span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>Card<span class="token punctuation">.</span>Body<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>Card<span class="token operator">></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-export default Product;
-</code></pre>
+<span class="token keyword">export</span> <span class="token keyword">default</span> Product<span class="token punctuation">;</span></code></pre>
 <p>The above code create a Product component and consume the props which holds a product object.</p>
 <p>The problem statement for lazy loading is that suppose we have 100s of product and all these product will try to load the image even they are not there in the view port. So we need to write a logic such that only load the image if the section is in view port or near to the view port.</p>
 <p>So let's create two variable, isIntersecting and imageURL</p>
-<pre><code class="language-javascript">const [isIntersecting, setIsIntersecting] = useState(false);
-const [imageUrl, setImageUrl] = useState('');
-</code></pre>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> <span class="token punctuation">[</span>isIntersecting<span class="token punctuation">,</span> setIsIntersecting<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token punctuation">[</span>imageUrl<span class="token punctuation">,</span> setImageUrl<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>and image element src should point to imageURL instead of product.image</p>
-<pre><code class="language-javascript">&lt;img src={imageUrl} className=&quot;card-img-top&quot; alt={product.name} ref={ref} /&gt;
-</code></pre>
+<pre class="language-javascript"><code class="language-javascript"><span class="token operator">&lt;</span>img src<span class="token operator">=</span><span class="token punctuation">{</span>imageUrl<span class="token punctuation">}</span> className<span class="token operator">=</span><span class="token string">"card-img-top"</span> alt<span class="token operator">=</span><span class="token punctuation">{</span>product<span class="token punctuation">.</span>name<span class="token punctuation">}</span> ref<span class="token operator">=</span><span class="token punctuation">{</span>ref<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span></code></pre>
 <p>Now, if isIntersecting is true, lets update the imageUrl with product.image</p>
-<pre><code class="language-javascript">useEffect(() =&gt; {
-  if (isIntersecting) {
-    setImageUrl(product.image);
-  }
-}, [isIntersecting, imageUrl, product.image]);
-</code></pre>
+<pre class="language-javascript"><code class="language-javascript"><span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>isIntersecting<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">setImageUrl</span><span class="token punctuation">(</span>product<span class="token punctuation">.</span>image<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>isIntersecting<span class="token punctuation">,</span> imageUrl<span class="token punctuation">,</span> product<span class="token punctuation">.</span>image<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>But how do we find the right value of isIntersecting, the answer is Intersection Observer API which came into picture in 2016.</p>
-<pre><code class="language-javascript">useEffect(() =&gt; {
-  const observer = new IntersectionObserver(([entry]) =&gt; {
-    setIsIntersecting(entry.isIntersecting);
-  });
-  observer.observe(ref.current);
-  return () =&gt; observer.disconnect();
-}, [isIntersecting]);
-</code></pre>
+<pre class="language-javascript"><code class="language-javascript"><span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> observer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">IntersectionObserver</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">[</span>entry<span class="token punctuation">]</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token function">setIsIntersecting</span><span class="token punctuation">(</span>entry<span class="token punctuation">.</span>isIntersecting<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  observer<span class="token punctuation">.</span><span class="token function">observe</span><span class="token punctuation">(</span>ref<span class="token punctuation">.</span>current<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> observer<span class="token punctuation">.</span><span class="token function">disconnect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>isIntersecting<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>The combined code will looks like below code.</p>
-<pre><code class="language-javascript">import { Link } from 'react-router-dom';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Rating from '../Rating/Rating';
-import axios from 'axios';
-import { useContext, useEffect, useRef, useState } from 'react';
-import { Store } from '../../Store';
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Link <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react-router-dom'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> Card <span class="token keyword">from</span> <span class="token string">'react-bootstrap/Card'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> Button <span class="token keyword">from</span> <span class="token string">'react-bootstrap/Button'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> Rating <span class="token keyword">from</span> <span class="token string">'../Rating/Rating'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> useContext<span class="token punctuation">,</span> useEffect<span class="token punctuation">,</span> useRef<span class="token punctuation">,</span> useState <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Store <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../../Store'</span><span class="token punctuation">;</span>
 
-function Product(props) {
-  const { product } = props;
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const {
-    cart: { cartItems },
-  } = state;
+<span class="token keyword">function</span> <span class="token function">Product</span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span> product <span class="token punctuation">}</span> <span class="token operator">=</span> props<span class="token punctuation">;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span> state<span class="token punctuation">,</span> <span class="token literal-property property">dispatch</span><span class="token operator">:</span> ctxDispatch <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useContext</span><span class="token punctuation">(</span>Store<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">cart</span><span class="token operator">:</span> <span class="token punctuation">{</span> cartItems <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span> <span class="token operator">=</span> state<span class="token punctuation">;</span>
 
-  const [isIntersecting, setIsIntersecting] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>isIntersecting<span class="token punctuation">,</span> setIsIntersecting<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>imageUrl<span class="token punctuation">,</span> setImageUrl<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  const ref = useRef(null);
+  <span class="token keyword">const</span> ref <span class="token operator">=</span> <span class="token function">useRef</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  useEffect(() =&gt; {
-    const observer = new IntersectionObserver(([entry]) =&gt; {
-      setIsIntersecting(entry.isIntersecting);
-    });
-    observer.observe(ref.current);
-    return () =&gt; observer.disconnect();
-  }, [isIntersecting]);
+  <span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> observer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">IntersectionObserver</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">[</span>entry<span class="token punctuation">]</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+      <span class="token function">setIsIntersecting</span><span class="token punctuation">(</span>entry<span class="token punctuation">.</span>isIntersecting<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    observer<span class="token punctuation">.</span><span class="token function">observe</span><span class="token punctuation">(</span>ref<span class="token punctuation">.</span>current<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> observer<span class="token punctuation">.</span><span class="token function">disconnect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>isIntersecting<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  useEffect(() =&gt; {
-    if (isIntersecting) {
-      setImageUrl(product.image);
-    }
-  }, [isIntersecting, imageUrl, product.image]);
+  <span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>isIntersecting<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">setImageUrl</span><span class="token punctuation">(</span>product<span class="token punctuation">.</span>image<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>isIntersecting<span class="token punctuation">,</span> imageUrl<span class="token punctuation">,</span> product<span class="token punctuation">.</span>image<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  const addToCartHandler = async (item) =&gt; {
-    const existItem = cartItems.find((x) =&gt; x._id === product._id);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/${item._id}`);
+  <span class="token keyword">const</span> <span class="token function-variable function">addToCartHandler</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">item</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> existItem <span class="token operator">=</span> cartItems<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">x</span><span class="token punctuation">)</span> <span class="token operator">=></span> x<span class="token punctuation">.</span>_id <span class="token operator">===</span> product<span class="token punctuation">.</span>_id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> quantity <span class="token operator">=</span> existItem <span class="token operator">?</span> existItem<span class="token punctuation">.</span>quantity <span class="token operator">+</span> <span class="token number">1</span> <span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> <span class="token punctuation">{</span> data <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> axios<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/api/products/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>item<span class="token punctuation">.</span>_id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    if (data.countInStock &lt; quantity) {
-      window.alert('Sorry, Product is out of stock');
-      return;
-    }
-    ctxDispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...item, quantity },
-    });
-  };
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>data<span class="token punctuation">.</span>countInStock <span class="token operator">&lt;</span> quantity<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      window<span class="token punctuation">.</span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">'Sorry, Product is out of stock'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">ctxDispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'CART_ADD_ITEM'</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">payload</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token operator">...</span>item<span class="token punctuation">,</span> quantity <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-  return (
-    &lt;Card className=&quot;product&quot; key={product.slug}&gt;
-      &lt;Link to={`/product/${product.slug}`}&gt;
-        &lt;img
-          src={imageUrl}
-          className=&quot;card-img-top&quot;
-          alt={product.name}
-          ref={ref}
-        /&gt;
-      &lt;/Link&gt;
-      &lt;Card.Body&gt;
-        &lt;Link to={`/product/${product.slug}`}&gt;
-          &lt;Card.Title&gt;{product.name}&lt;/Card.Title&gt;
-        &lt;/Link&gt;
-        &lt;Rating rating={product.rating} numReviews={product.numReviews} /&gt;
-        &lt;Card.Text&gt;${product.price}&lt;/Card.Text&gt;
-        {product.countInStock === 0 ? (
-          &lt;Button variant=&quot;light&quot; disabled&gt;
-            Out of Stock
-          &lt;/Button&gt;
-        ) : (
-          &lt;Button onClick={() =&gt; addToCartHandler(product)}&gt;Add to Cart&lt;/Button&gt;
-        )}
-      &lt;/Card.Body&gt;
-    &lt;/Card&gt;
-  );
-}
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>Card className<span class="token operator">=</span><span class="token string">"product"</span> key<span class="token operator">=</span><span class="token punctuation">{</span>product<span class="token punctuation">.</span>slug<span class="token punctuation">}</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>Link to<span class="token operator">=</span><span class="token punctuation">{</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/product/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>product<span class="token punctuation">.</span>slug<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">}</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>img
+          src<span class="token operator">=</span><span class="token punctuation">{</span>imageUrl<span class="token punctuation">}</span>
+          className<span class="token operator">=</span><span class="token string">"card-img-top"</span>
+          alt<span class="token operator">=</span><span class="token punctuation">{</span>product<span class="token punctuation">.</span>name<span class="token punctuation">}</span>
+          ref<span class="token operator">=</span><span class="token punctuation">{</span>ref<span class="token punctuation">}</span>
+        <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>Link<span class="token operator">></span>
+      <span class="token operator">&lt;</span>Card<span class="token punctuation">.</span>Body<span class="token operator">></span>
+        <span class="token operator">&lt;</span>Link to<span class="token operator">=</span><span class="token punctuation">{</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/product/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>product<span class="token punctuation">.</span>slug<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">}</span><span class="token operator">></span>
+          <span class="token operator">&lt;</span>Card<span class="token punctuation">.</span>Title<span class="token operator">></span><span class="token punctuation">{</span>product<span class="token punctuation">.</span>name<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>Card<span class="token punctuation">.</span>Title<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>Link<span class="token operator">></span>
+        <span class="token operator">&lt;</span>Rating rating<span class="token operator">=</span><span class="token punctuation">{</span>product<span class="token punctuation">.</span>rating<span class="token punctuation">}</span> numReviews<span class="token operator">=</span><span class="token punctuation">{</span>product<span class="token punctuation">.</span>numReviews<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>Card<span class="token punctuation">.</span>Text<span class="token operator">></span>$<span class="token punctuation">{</span>product<span class="token punctuation">.</span>price<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>Card<span class="token punctuation">.</span>Text<span class="token operator">></span>
+        <span class="token punctuation">{</span>product<span class="token punctuation">.</span>countInStock <span class="token operator">===</span> <span class="token number">0</span> <span class="token operator">?</span> <span class="token punctuation">(</span>
+          <span class="token operator">&lt;</span>Button variant<span class="token operator">=</span><span class="token string">"light"</span> disabled<span class="token operator">></span>
+            Out <span class="token keyword">of</span> Stock
+          <span class="token operator">&lt;</span><span class="token operator">/</span>Button<span class="token operator">></span>
+        <span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token punctuation">(</span>
+          <span class="token operator">&lt;</span>Button onClick<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">addToCartHandler</span><span class="token punctuation">(</span>product<span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">></span>Add to Cart<span class="token operator">&lt;</span><span class="token operator">/</span>Button<span class="token operator">></span>
+        <span class="token punctuation">)</span><span class="token punctuation">}</span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>Card<span class="token punctuation">.</span>Body<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>Card<span class="token operator">></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-export default Product;
-</code></pre>
+<span class="token keyword">export</span> <span class="token keyword">default</span> Product<span class="token punctuation">;</span></code></pre>
 <p>But this code also looks like our onScroll function, so what is the advantage.</p>
 <p>Here's why the Intersection Observer API is better than the <code>window.onscroll</code> approach:</p>
 <ol>
